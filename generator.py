@@ -11,10 +11,18 @@ def create_presigned_post(bucket_name, object_name):
 
 
 def lambda_handler(event, context):
-    
-    print("Received event: " + json.dumps(event, indent=2))
+    try:
+        object_name = event['queryStringParameters']['filename']
+        bucket_name = event['queryStringParameters']['bucketname']
+    except KeyError:
+        return {
+            "isBase64Encoded": False,
+            "statusCode": "200",
+            "body": "missing query param!",
+            "headers": {"Content-Type": "text/plain"},
+        }
 
-    upload_url = create_presigned_post('target', 'test-file.txt')
+    upload_url = create_presigned_post(bucket_name, object_name)
     
     return {
         "isBase64Encoded": False,
