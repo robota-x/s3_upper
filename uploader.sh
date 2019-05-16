@@ -3,7 +3,6 @@ source secrets.sh
 get_upload_url() {
     curl "$APIURL?filename=$1&bucketname=$BUCKETNAME" 2>/dev/null
 }
-export -f get_upload_url
 
 upload_file() {
     curl -X PUT -T $1 -L $2
